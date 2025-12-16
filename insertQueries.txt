@@ -1,0 +1,73 @@
+-- Mentors --
+db.mentors.insertMany([
+  { _id: ObjectId("6940fb095bfe2f6ec6a10e48"), name: "Vishnu" },
+  { _id: ObjectId("6940fab45bfe2f6ec6a10e47"), name: "Ajay" },
+  { _id: ObjectId("6940faa85bfe2f6ec6a10e46"), name: "Suresh" },
+  { _id: ObjectId("6940fa9f5bfe2f6ec6a10e45"), name: "Sujithra" }
+])
+
+
+-- Company Drives --
+db.company_drives.insertMany([
+  {
+    company_name: "Google",
+    date: ISODate("2020-10-25"),
+    students_attended: [
+      ObjectId("6940f98f4e00536aa7fa4610"),
+      ObjectId("6940f9bd4e00536aa7fa4613")
+    ]
+  }
+])
+
+
+-- Attendance --
+db.attendance.insertMany([
+  {
+    user_id: ObjectId("6940f9a64e00536aa7fa4611"),
+    date: ISODate("2020-10-20"),
+    status: "absent"
+  }
+])
+
+-- Tasks --
+db.tasks.insertMany([
+  {
+    task_name: "MongoDB Task",
+    due_date: ISODate("2020-10-18"),
+    submitted_users: [ObjectId("6940f98f4e00536aa7fa4610")]
+  }
+])
+
+-- Topics --
+db.topics.insertMany([
+  { topic: "MongoDB", date: ISODate("2020-10-10") },
+  { topic: "Node.js", date: ISODate("2020-10-20") }
+])
+
+-- Users --
+db.users.insertMany([
+  {
+    _id: ObjectId("6940f98f4e00536aa7fa4610"),
+    name: "Nithish",
+    email: "nithish@gmail.com",
+    mentor_id: ObjectId("6940fb095bfe2f6ec6a10e48")
+  },
+  {
+    _id: ObjectId("6940f9a64e00536aa7fa4611"),
+    name: "Kiran",
+    email: "kiran@gmail.com",
+    mentor_id: ObjectId("6940fb095bfe2f6ec6a10e48")
+  },
+  {
+    _id: ObjectId("6940f9b04e00536aa7fa4612"),
+    name: "Sanjay",
+    email: "sanjay@gmail.com",
+    mentor_id: ObjectId("6940fab45bfe2f6ec6a10e47")
+  },
+  {
+    _id: ObjectId("6940f9bd4e00536aa7fa4613"),
+    name: "Gill",
+    email: "gill@gmail.com",
+    mentor_id: ObjectId("6940fab45bfe2f6ec6a10e47")
+  }
+])
