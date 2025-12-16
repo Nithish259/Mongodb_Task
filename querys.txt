@@ -1,0 +1,70 @@
+
+-- Topics & tasks in October --
+db.topics.find({
+  date: { $gte: ISODate("2020-10-01"), $lte: ISODate("2020-10-31") }
+})
+
+db.tasks.find({
+  due_date: { $gte: ISODate("2020-10-01"), $lte: ISODate("2020-10-31") }
+})
+
+--Company drives + students
+db.company_drives.find({
+  date: { $gte: ISODate("2020-10-15"), $lte: ISODate("2020-10-31") }
+})
+
+
+-- Problems solved by users --
+db.company_drives.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "students_attended",
+      foreignField: "_id",
+      as: "students"
+    }
+  }
+])
+
+-- Mentors with > 15 mentees --
+db.users.aggregate([
+  { $group: { _id: "$mentor_id", count: { $sum: 1 } } },
+  { $match: { count: { $gt: 15 } } }
+])
+
+-- Absent + task not submitted --
+db.codekata.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "user_id",
+      foreignField: "_id",
+      as: "user"
+    }
+  }
+])
+
+db.attendance.aggregate([
+  {
+    $match: {
+      status: "absent",
+      date: { $gte: ISODate("2020-10-15"), $lte: ISODate("2020-10-31") }
+    }
+  },
+  {
+    $lookup: {
+      from: "tasks",
+      let: { uid: "$user_id" },
+      pipeline: [
+        {
+          $match: {
+            due_date: { $gte: ISODate("2020-10-15"), $lte: ISODate("2020-10-31") },
+            $expr: { $not: { $in: ["$$uid", "$submitted_users"] } }
+          }
+        }
+      ],
+      as: "pending_tasks"
+    }
+  },
+  { $match: { pending_tasks: { $ne: [] } } }
+])
